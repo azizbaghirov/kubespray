@@ -1,0 +1,10 @@
+
+VENVDIR=kubespray-venv
+KUBESPRAYDIR=kubespray
+python3 -m venv $VENVDIR
+source $VENVDIR/bin/activate
+git clone https://github.com/kubernetes-sigs/kubespray.git
+cd $KUBESPRAYDIR
+pip install -r requirements.txt
+cp -rfp inventory/sample inventory/mycluster
+ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root --extra-vars='@access_to_servers.yml' cluster.yml
