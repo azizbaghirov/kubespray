@@ -1,0 +1,27 @@
+all:
+  hosts:
+    duk8stestmaster01:
+      ansible_host: 10.50.6.2
+      ip: 10.50.6.2
+      access_ip: 10.50.6.2
+    duk8stestworker01:
+      ansible_host: 10.50.6.3
+      ip: 10.50.6.3
+      access_ip: 10.50.6.3
+  children:
+    kube_control_plane:
+      hosts:
+        duk8stestmaster01:
+    kube_node:
+      hosts:
+        duk8stestmaster01:
+        duk8stestworker01:
+    etcd:
+      hosts:
+        duk8stestmaster01:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
+    calico_rr:
+      hosts: {}
