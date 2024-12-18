@@ -280,3 +280,16 @@ See also [Network checker](docs/advanced/netcheck.md).
 CI/end-to-end tests sponsored by: [CNCF](https://cncf.io), [Equinix Metal](https://metal.equinix.com/), [OVHcloud](https://www.ovhcloud.com/), [ELASTX](https://elastx.se/).
 
 See the [test matrix](docs/developers/test_cases.md) for details.
+
+
+
+
+VENVDIR=kubespray-venv
+KUBESPRAYDIR=kubespray
+python3 -m venv $VENVDIR
+source $VENVDIR/bin/activate
+git clone https://github.com/kubernetes-sigs/kubespray.git
+cd $KUBESPRAYDIR
+pip install -r requirements.txt
+cp -rfp inventory/sample inventory/mycluster
+ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root --extra-vars='@access_to_servers.yml' cluster.yml
