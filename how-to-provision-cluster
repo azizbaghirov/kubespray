@@ -13,3 +13,32 @@ vi inventory/mycluster/hosts.yaml # edit hostnames
 vi inventory/mycluster/group_vars/all/all.yml # optional you can enable loadbalancer
 apt install sshpass -y # for the ansible to connect to the remote host with the password
 ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root --extra-vars='@access_to_servers.yml' cluster.yml
+
+
+If we want to keep firewalld up on K8S, we have to open the following ports:
+Master nodes: 6443/tcp,2379-2380/tcp,10250/tcp,10259/tcp,10257/tcp
+Worker nodes: 10250/tcp,10256/tcp,30000-32767/tcp
+On both nodes: https
+
+If we want to add additional haproxy for kubeapi's edit 'inventory/mycluster/group_vars/all/all.yml' and change the following lines:
+
+apiserver_loadbalancer_domain_name: "lb-apiserver.kubernetes.local" # This name will be used by master nodes kubeconfig file
+loadbalancer_apiserver:
+   address: <your haproxy server IP>
+   port: 8383 # Port that have been configured in haproxy
+
+## Internal loadbalancers for apiservers
+loadbalancer_apiserver_localhost: false
+
+Haproxy config:
+
+listen kubernetes-apiserver-https
+  bind *:8383
+  mode tcp
+  option log-health-checks
+  timeout client 3h
+  timeout server 3h
+  server master1 master-node-ip:6443 check check-ssl verify none inter 10000
+  server master2 master-node-ip:6443 check check-ssl verify none inter 10000
+  balance roundrobin
+
