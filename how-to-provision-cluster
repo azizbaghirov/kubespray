@@ -12,6 +12,7 @@ CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inv
 vi inventory/mycluster/hosts.yaml # edit hostnames
 vi inventory/mycluster/group_vars/all/all.yml # optional you can enable loadbalancer
 apt install sshpass -y # for the ansible to connect to the remote host with the password
+ansible all -i inventory/mycluster/hosts.yaml -m ping --extra-vars='@access_to_servers.yml' # Better to ping hosts before provisioning
 ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root --extra-vars='@access_to_servers.yml' cluster.yml
 
 
