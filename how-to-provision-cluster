@@ -22,17 +22,18 @@ Master nodes: 6443/tcp,2379-2380/tcp,10250/tcp,10259/tcp,10257/tcp
 Worker nodes: 10250/tcp,10256/tcp,30000-32767/tcp
 On both nodes: https
 
-Worker:
-# firewall-cmd --add-port={10250,10256,30000-32767}/tcp --permanent
-# firewall-cmd --add-port=30000-32767/udp --permanent
-# firewall-cmd --permanent --zone=trusted --add-source=10.233.64.0/18 (To identify the pod cidr after provision: # kubectl cluster-info dump | grep -m 1 cluster-cidr)
+# Worker:
+firewall-cmd --add-port={10250,10256,30000-32767}/tcp --permanent
+firewall-cmd --add-port=30000-32767/udp --permanent
+firewall-cmd --permanent --zone=trusted --add-source=10.233.64.0/18 (To identify the pod cidr after provision: # kubectl cluster-info dump | grep -m 1 cluster-cidr)
 
-Master:
-# firewall-cmd --add-port={6443,2379-2380,10250,10259,10257}/tcp --permanent
+# Master:
+firewall-cmd --add-port={6443,2379-2380,10250,10259,10257}/tcp --permanent
 
-Both:
-# firewall-cmd --add-service=https --permanent
-# firewall-cmd --permanent --set-target=ACCEPT
+# Both:
+firewall-cmd --permanent --zone=trusted --add-source=10.233.64.0/18 (To identify the pod cidr after provision: # kubectl cluster-info dump | grep -m 1 cluster-cidr)
+firewall-cmd --add-service=https --permanent
+firewall-cmd --permanent --set-target=ACCEPT
 
 If we want to add additional haproxy for kubeapi's edit 'inventory/mycluster/group_vars/all/all.yml' and change the following lines:
 
