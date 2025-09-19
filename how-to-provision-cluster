@@ -29,7 +29,7 @@ firewall-cmd --permanent --zone=trusted --add-source=10.233.64.0/18 (To identify
 
 # Master:
 firewall-cmd --add-port={6443,2379-2380,10250,10259,10257}/tcp --permanent
-# Also you have to add port from your virtual service
+# Also you have to add port from your api gateway
 
 # Both:
 firewall-cmd --permanent --zone=trusted --add-source=10.233.64.0/18 (To identify the pod cidr after provision: # kubectl cluster-info dump | grep -m 1 cluster-cidr)
