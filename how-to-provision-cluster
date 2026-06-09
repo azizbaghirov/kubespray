@@ -35,6 +35,11 @@ firewall-cmd --add-port={6443,2379-2380,10250,10259,10257}/tcp --permanent
 firewall-cmd --permanent --zone=trusted --add-source=10.233.64.0/18 (To identify the pod cidr after provision: # kubectl cluster-info dump | grep -m 1 cluster-cidr)
 firewall-cmd --add-service=https --permanent
 
+# Note:
+# If you upgraded Ubuntu from 20.04 to 24.04 also firewalld will be updated. In this case you have to add K8S node host ip range to zone trusted:
+firewall-cmd --permanent --zone=trusted --add-source=<host-subnet>/24 --permanent
+firewall-cmd --reload
+
 If we want to add additional haproxy for kubeapi's edit 'inventory/mycluster/group_vars/all/all.yml' and change the following lines:
 
 apiserver_loadbalancer_domain_name: "lb-apiserver.kubernetes.local" # This name will be used by master nodes kubeconfig file
