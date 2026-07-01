@@ -8,7 +8,7 @@ git checkout v2.23.3
 // Look at the version of ansible, kube and calico version
 cat playbooks/ansible_version.yml
 grep kube_version inventory/sample/group_vars/k8s_cluster/k8s-cluster.yml
-grep calico_version roles/download/defaults/main/main.yml
+grep -ri calico_version .
 
 // Indentify from AI which version of python must stand both on ansible and cluster nodes according to ansible version
 // (e.g. i want to upgrade my k8s cluster from 1.26 to 1.27 with kubespray.
