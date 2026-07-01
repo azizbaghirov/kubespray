@@ -5,10 +5,12 @@ git clone https://github.com/kubernetes-sigs/kubespray.git
 cd kubespray
 git checkout v2.23.3
 
-// Look at the version of ansible, kube and calico version
+// Look at the version of ansible, kube and calico version (also in nodes)
 cat playbooks/ansible_version.yml
 grep kube_version inventory/sample/group_vars/k8s_cluster/k8s-cluster.yml
 grep -ri calico_version .
+
+kubectl get pods -n kube-system -l k8s-app=calico-node -o jsonpath='{.items[0].spec.containers[0].image}'
 
 // Indentify from AI which version of python must stand both on ansible and cluster nodes according to ansible version
 // (e.g. i want to upgrade my k8s cluster from 1.26 to 1.27 with kubespray.
