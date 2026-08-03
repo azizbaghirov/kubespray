@@ -49,3 +49,9 @@ ansible all -i inventory/mycluster/hosts.yaml -m ping --extra-vars='@access_to_s
 
 // Run the upgrade playbook
 ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root --extra-vars='@access_to_servers.yml' upgrade-cluster.yml
+
+// If our play fails with the error 'GLIBC_2.34' not found we can take the containerd version from working node and specify it in k8s-cluster.yml
+ containerd --version (take the version)
+vi ./inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml
+  containerd_version: 2.0.5
+:wq
