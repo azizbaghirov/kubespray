@@ -55,3 +55,6 @@ ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root -
 vi ./inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml
   containerd_version: 2.0.5
 :wq
+
+// Checksums
+cat roles/kubespray_defaults/vars/main/checksums.yml
